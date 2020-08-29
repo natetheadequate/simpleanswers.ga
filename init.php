@@ -3,7 +3,7 @@
  * Template for generating all pages of the website. Included at the end of index.php after $pageinfo for the homepage is defined.
  */
 require 'dbcredentials.php'; //defines $CREDENTIALS
-$database = new mysqli($CREDENTIALS);
+$database = new mysqli($CREDENTIALS[0], $CREDENTIALS[1], $CREDENTIALS[2], $CREDENTIALS[3], $CREDENTIALS[4]);
 $MYSQL_RETRIEVAL_ERROR = $database->error;
 if ($MYSQL_RETRIEVAL_ERROR) {
     mail("natewhite345@gmail.com", "MYSQL_RETRIEVAL_ERROR-init.php", $MYSQL_RETRIEVAL_ERROR);
