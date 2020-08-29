@@ -1,6 +1,6 @@
 <?php
 $additionalinfo='<script type="text/javascript">
-var elements=document.getElementById("storyadder").elements;
+var elements=document.getElementById("storyadder").elements;//adf
 var notsubmitted=true;
 for(var i=0;i<elements.length;i++){
         if(!!elements[i].name){
