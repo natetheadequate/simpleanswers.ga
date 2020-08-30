@@ -1,201 +1,201 @@
 <?php
-        require 'DBconnector.php';
-        $database=$DB;
-        $homewebsite='http://www.simpleanswers.ga';
-        if (is_null($verifieralreadycalled)) {
-            include "verifier.php";
+include 'DBconnector.php';
+$database=$DB;
+$homewebsite='http://www.simpleanswers.ga';
+if (is_null($verifieralreadycalled)) {
+    include "verifier.php";
+}
+if (!isset($additionalinfo)) {
+    $additionalinfo='';
+}
+$conn=(($database->query("SELECT * FROM `Questions`"))==false)?false:true;//if the database can be contacted, conn is true, else false
+if ($conn&&isset($_POST['dothissql'])) {//this is for the voting system
+        $backup=fopen('backup.txt', "a");
+    if (isset($_POST['page'])&&strpos($_POST['page'], 'c')===false) {
+        switch ((int)$_POST['dothissql']) {
+            case 0: fwrite($backup, '¦'.$_POST['page'].'u-');
+                $database->query('UPDATE `Questions` set `upvotes`=`upvotes`-1 where p='.$_POST['page']);
+                continue;
+            case 1: fwrite($backup, '¦'.$_POST['page'].'d-');
+                $database->query('UPDATE `Questions` set `downvotes`=`downvotes`-1 where p='.$_POST['page']);
+                continue;
+            case 2: fwrite($backup, '¦'.$_POST['page'].'d-¦'.$_POST['page'].'u+');
+                $database->query('UPDATE `Questions` set `downvotes`=`downvotes`-1,`upvotes`=`upvotes`+1 where p='.$_POST['page']);
+                continue;
+            case 3: fwrite($backup, '¦'.$_POST['page'].'u+');
+                $database->query('UPDATE `Questions` set `upvotes`=`upvotes`+1 where p='.$_POST['page']);
+                continue;
+            case 4: fwrite($backup, '¦'.$_POST['page'].'d+¦'.$_POST['page'].'u-');
+                $database->query('UPDATE `Questions` set `upvotes`=`upvotes`-1,`downvotes`=`downvotes`+1 where p='.$_POST['page']);
+                continue;
+            case 5: fwrite($backup, '¦'.$_POST['page'].'d+');
+                $database->query('UPDATE `Questions` set `downvotes`=`downvotes`+1 where p='.$_POST['page']);
+                continue;
         }
-        if (!isset($additionalinfo)) {
-            $additionalinfo='';
-        }
-        $conn=(($database->query("SELECT * FROM `Questions`"))==false)?false:true;//if the database can be contacted, conn is true, else false
-        if ($conn&&isset($_POST['dothissql'])) {//this is for the voting system
-                $backup=fopen('backup.txt', "a");
-            if (isset($_POST['page'])&&strpos($_POST['page'], 'c')===false) {
-                switch ((int)$_POST['dothissql']) {
-                                case 0: fwrite($backup, '¦'.$_POST['page'].'u-');
-                                        $database->query('Update `Questions` set `upvotes`=`upvotes`-1 where p='.$_POST['page']);
-                                        continue;
-                                case 1: fwrite($backup, '¦'.$_POST['page'].'d-');
-                                        $database->query('Update `Questions` set `downvotes`=`downvotes`-1 where p='.$_POST['page']);
-                                        continue;
-                                case 2: fwrite($backup, '¦'.$_POST['page'].'d-¦'.$_POST['page'].'u+');
-                                        $database->query('Update `Questions` set `downvotes`=`downvotes`-1,`upvotes`=`upvotes`+1 where p='.$_POST['page']);
-                                        continue;
-                                case 3: fwrite($backup, '¦'.$_POST['page'].'u+');
-                                        $database->query('Update `Questions` set `upvotes`=`upvotes`+1 where p='.$_POST['page']);
-                                        continue;
-                                case 4: fwrite($backup, '¦'.$_POST['page'].'d+¦'.$_POST['page'].'u-');
-                                        $database->query('Update `Questions` set `upvotes`=`upvotes`-1,`downvotes`=`downvotes`+1 where p='.$_POST['page']);
-                                        continue;
-                                case 5: fwrite($backup, '¦'.$_POST['page'].'d+');
-                                        $database->query('Update `Questions` set `downvotes`=`downvotes`+1 where p='.$_POST['page']);
-                                        continue;
-                                
-                        }
-            } elseif (isset($_POST['page'])&&strpos($_POST['page'], 'c')!==false) {
-                $splitted=explode('c', $_POST['page']);
-                $page=$splitted[0];
-                $commentid=$splitted[1];
-                $change=0;
-                $comments=json_decode((($database->query('Select `comments` from Questions where p='.$page))->fetch_array())[0], true);
-                switch ((int)$_POST['dothissql']) {
-                                case 0: $change=-1;
-                                        fwrite($backup, '¦'.$_POST['page'].'u-');
-                                        continue;
-                                case 1: fwrite($backup, '¦'.$_POST['page'].'d-');
-                                        $change=1;
-                                        continue;
-                                case 2: fwrite($backup, '¦'.$_POST['page'].'d-¦'.$_POST['page'].'u+');
-                                        $change=2;
-                                        continue;
-                                case 3: fwrite($backup, '¦'.$_POST['page'].'u+');
-                                        $change=1;
-                                        continue;
-                                case 4: fwrite($backup, '¦'.$_POST['page'].'d+¦'.$_POST['page'].'u-');
-                                        $change=-2;
-                                        continue;
-                                case 5: fwrite($backup, '¦'.$_POST['page'].'d+');
-                                        $change=-1;
-                                        continue;
-                        }
-                        
-                for ($i=0;$i<count($comments);$i++) {
-                    if (strval($comments[$i]['id'])===strval($commentid)) {
-                        $comments[$i]['netvotes']+=$change;
-                    }
+        $database->query('UPDATE `Questions` set netvotes=upvotes-downvotes where p='.$_POST['page']);
+    } elseif (isset($_POST['page'])&&strpos($_POST['page'], 'c')!==false) {
+        $splitted=explode('c', $_POST['page']);
+        $page=$splitted[0];
+        $commentid=$splitted[1];
+        $change=0;
+        $comments=json_decode((($database->query('Select `comments` from Questions where p='.$page))->fetch_array())[0], true);
+        switch ((int)$_POST['dothissql']) {
+                        case 0: $change=-1;
+                                fwrite($backup, '¦'.$_POST['page'].'u-');
+                                continue;
+                        case 1: fwrite($backup, '¦'.$_POST['page'].'d-');
+                                $change=1;
+                                continue;
+                        case 2: fwrite($backup, '¦'.$_POST['page'].'d-¦'.$_POST['page'].'u+');
+                                $change=2;
+                                continue;
+                        case 3: fwrite($backup, '¦'.$_POST['page'].'u+');
+                                $change=1;
+                                continue;
+                        case 4: fwrite($backup, '¦'.$_POST['page'].'d+¦'.$_POST['page'].'u-');
+                                $change=-2;
+                                continue;
+                        case 5: fwrite($backup, '¦'.$_POST['page'].'d+');
+                                $change=-1;
+                                continue;
                 }
-                $database->query('Update Questions Set comments=\''.json_encode($comments).'\' where p='.$page);
-                $additionalinfo.='<script type="text/javascript">document.getElementById("commentidpasser").innerHTML="'.$commentid.'"</script>';
-            }
-            $additionalinfo.='<script type="text/javascript">document.getElementById("messagepassed").innerHTML="';
-            switch ((int)$_POST['dothissql']) {//these are the values of the undo fucntion that must be called when i refresh the page in the js
-                        case 0:$additionalinfo.='3';continue;
-                        case 1:$additionalinfo.='5';continue;
-                        case 2:$additionalinfo.='4';continue;
-                        case 3:$additionalinfo.='0';continue;
-                        case 4:$additionalinfo.='2';continue;
-                        case 5:$additionalinfo.='1';continue;
-                }
-            $additionalinfo.='";</script>';
-            //$additionalinfo.='<script>if(window.history.replaceState){window.history.replaceState(null,null,window.location.href);}</script>';
-            $_POST['dothissql']=null;
-        }
-        if (isset($_POST['commenttext'])) {//this only triggers on reload following comment submission
-            if ($conn) {
-                $datafile=$database->query("SELECT `comments` FROM `Questions` WHERE p=".$_POST['page']);
-                $data=$datafile->fetch_array();
-                $data=json_decode($data['comments'], true);
-                $giveup=false;
-                $id='';
-                if (isset($_POST['id'])) {
-                    $id.=strval($_POST['id']);
-                }
-                $id.="X";
-                if (is_null($data)) {
-                    $data=array();
-                } else {//check for duplicates
-                        foreach ($data as $datum) {//prevent spam
-                                if ($datum['content']==verify($_POST['commenttext'], "n", 0)&&substr($datum['id'], 0, -1)==substr($id, 0, -1)) {
-                                    $additionalinfo.='<script>alert("The comment you submitted was a duplicate and will not be posted")</script>';
-                                    $giveup=true;
-                                    break;
-                                }
-                        }
-                }
-                if (!$giveup) {
-                    $time=time();
-                    $newdata=['content'=>verify($_POST["commenttext"], "n", 0),'submitted'=>$time,"posted"=>-1,"id"=>$id,"netvotes"=>0];
-                    if (isset($_POST['email'])&&$_POST['email']!='') {
-                        $newdata['email']=verify($_POST['email'], "n", 0);
-                    };
-                    //var_dump(json_encode($newdata));
-                    array_push($data, $newdata);
-                    /*$matches=array();
-                    preg_match_all('/\\\u(.[0-9a-z]{4})/',json_encode($data),$matches);
-                    for($i=0;$i<count($matches);$i++){
-                            $data=preg_replace('/\\u[0-9a-z]{4}/','\\u{'.$matches[$i].'}',json_encode($data));
-                    }*/
-                    $backup=fopen('backup.txt', "a");
-                    fwrite($backup, '¦c'.$_POST['page'].'¬'.json_encode($data), 200);
-                    $database->query("Update `BackupQuestions2` SET `comments`=`comments`+'".str_replace('\\/', '/', json_encode($newdata))."' WHERE `p`=".$_POST['page']);
-                    $database->query("UPDATE `BackupQuestions` SET `comments`='".str_replace('\\/', '/', json_encode($data))."' WHERE `p`=".$_POST['page']);
-                    $database->query("UPDATE `Questions` SET `comments`='".str_replace('\\/', '/', json_encode($data))."' WHERE `p`=".$_POST['page']);
-                    $childnodebefore=2;
-                    if ($_POST['id']=='') {
-                        $childnodebefore++;
-                    }
-                    sleep(1.5);
-                    $received=($database->query('SELECT `comments` FROM `Questions` WHERE `p`='.$_POST['page']))->fetch_array();
-                    $errormessage=null;
-                    if (isset($received[0])) {
-                        if (null!=json_decode($received[0], true)) {
-                            $errormessage='ERRORCOMMENTBROKEJSON';
-                            foreach (json_decode($received[0], true) as $comment) {
-                                if ($comment['submitted']==$time) {
-                                    $errormessage=null;
-                                    $additionalinfo.='<script type="text/javascript">document.getElementById("commentfooter'.$_POST['id'].'").insertBefore(document.createElement("p"),document.getElementById("commentfooter'.$_POST['id'].'").childNodes['.$childnodebefore.']).innerHTML="Your comment &ldquo;'.substr(verify($_POST['commenttext'], "n", 0), 0, -1).'&rdquo; has been submitted";</script>';
-                                    break;//this breaks out of foreach
-                                }
-                            }
-                        } else {
-                            $errormessage='ERRORCHECKDATABASEJSON';
-                        }
-                    } else {
-                        $errormessage='ERRORDATABASEMALFUNCTION';
-                    }
-                    if (isset($errormessage)) {
-                        $pageinfo=['title'=>"Error receiving submission",'content'=>'Your submission was received, but something happened due to an error on my part.  Please report this error to me using this <a target:"_blank" href="mailto:whitenat@students.holliston.k12.ma.us?subject='.$errormessage.'&body=settedcommentsto'.urlencode(var_export(str_split(json_encode($data)), true)).'page'.urlencode(var_export($_POST['page'], true)).'">link</a> so I can work to fix this immediately.'];
-                    }
-                }
-                foreach ($_POST as $key=>$value) {
-                    $_POST[$key]=null;
-                }
-            } else {
-                $pageinfo=['title'=>"Cannot reach server",'content'=>'The website is temporarily down and the comment could not be posted. The site should be back online in under an hour. I apologize for the inconvenience.'];
+                
+        for ($i=0;$i<count($comments);$i++) {
+            if (strval($comments[$i]['id'])===strval($commentid)) {
+                $comments[$i]['netvotes']+=$change;
             }
         }
-        if ($conn) {
-            $datafile=$database->query("SELECT `p`,`title` FROM `Questions` WHERE `p`>-1 AND `posted`>0 ORDER BY netvotes DESC, submitted DESC");
-            $navdata=array();
-            while ($data=$datafile->fetch_array()) {
-                array_push($navdata, $data);
+        $database->query('Update Questions Set comments=\''.json_encode($comments).'\' where p='.$page);
+        $additionalinfo.='<script type="text/javascript">document.getElementById("commentidpasser").innerHTML="'.$commentid.'"</script>';
+    }
+    $additionalinfo.='<script type="text/javascript">document.getElementById("messagepassed").innerHTML="';
+    switch ((int)$_POST['dothissql']) {//these are the values of the undo fucntion that must be called when i refresh the page in the js
+                case 0:$additionalinfo.='3';continue;
+                case 1:$additionalinfo.='5';continue;
+                case 2:$additionalinfo.='4';continue;
+                case 3:$additionalinfo.='0';continue;
+                case 4:$additionalinfo.='2';continue;
+                case 5:$additionalinfo.='1';continue;
+        }
+    $additionalinfo.='";</script>';
+    //$additionalinfo.='<script>if(window.history.replaceState){window.history.replaceState(null,null,window.location.href);}</script>';
+    $_POST['dothissql']=null;
+}
+if (isset($_POST['commenttext'])) {//this only triggers on reload following comment submission
+    if ($conn) {
+        $datafile=$database->query("SELECT `comments` FROM `Questions` WHERE p=".$_POST['page']);
+        $data=$datafile->fetch_array();
+        $data=json_decode($data['comments'], true);
+        $giveup=false;
+        $id='';
+        if (isset($_POST['id'])) {
+            $id.=strval($_POST['id']);
+        }
+        $id.="X";
+        if (is_null($data)) {
+            $data=array();
+        } else {//check for duplicates
+                foreach ($data as $datum) {//prevent spam
+                        if ($datum['content']==verify($_POST['commenttext'], "n", 0)&&substr($datum['id'], 0, -1)==substr($id, 0, -1)) {
+                            $additionalinfo.='<script>alert("The comment you submitted was a duplicate and will not be posted")</script>';
+                            $giveup=true;
+                            break;
+                        }
+                }
+        }
+        if (!$giveup) {
+            $time=time();
+            $newdata=['content'=>verify($_POST["commenttext"], "n", 0),'submitted'=>$time,"posted"=>-1,"id"=>$id,"netvotes"=>0];
+            if (isset($_POST['email'])&&$_POST['email']!='') {
+                $newdata['email']=verify($_POST['email'], "n", 0);
             };
-        } else {
-            $navdata=[];
-        };
-        $navbarhtml='<ul><li><a href="'.$homewebsite.'/addquestion.php">Add Your Question</a></li>';
-        if ($conn) {
-            for ($i=0;$i<count($navdata);$i++) {
-                $navbarhtml.='<li><a href="'.$homewebsite.'?p='.$navdata[$i]["p"].'">'.$navdata[$i]['title'].'</a></li>';
+            //var_dump(json_encode($newdata));
+            array_push($data, $newdata);
+            /*$matches=array();
+            preg_match_all('/\\\u(.[0-9a-z]{4})/',json_encode($data),$matches);
+            for($i=0;$i<count($matches);$i++){
+                    $data=preg_replace('/\\u[0-9a-z]{4}/','\\u{'.$matches[$i].'}',json_encode($data));
+            }*/
+            $backup=fopen('backup.txt', "a");
+            fwrite($backup, '¦c'.$_POST['page'].'¬'.json_encode($data), 200);
+            $database->query("Update `BackupQuestions2` SET `comments`=`comments`+'".str_replace('\\/', '/', json_encode($newdata))."' WHERE `p`=".$_POST['page']);
+            $database->query("UPDATE `BackupQuestions` SET `comments`='".str_replace('\\/', '/', json_encode($data))."' WHERE `p`=".$_POST['page']);
+            $database->query("UPDATE `Questions` SET `comments`='".str_replace('\\/', '/', json_encode($data))."' WHERE `p`=".$_POST['page']);
+            $childnodebefore=2;
+            if ($_POST['id']=='') {
+                $childnodebefore++;
             }
-        } else {
-            $navbarhtml.="<p>Questions could not be reached</p>";
-        }
-        $navbarhtml.='</ul>';
-        $commentsenabled=false;
-        if (is_null($pageinfo)) {
-            $pageinfo=array();
-            if (is_null($_GET['p'])||$_GET['p']<0) {
-                $pageinfo=['title'=>'Page not found','content'=>'Sorry, page not found.'];
-            } else {
-                if ($conn) {
-                    $datafile=$database->query("SELECT * FROM `Questions` WHERE p=".$_GET['p']." AND posted>0");
-                    while ($data=$datafile->fetch_array()) {
-                        array_push($pageinfo, $data);
-                    };
-                    if (!isset($pageinfo[0])) {
-                        $pageinfo=['title'=>'Page not found','content'=>'Sorry, page not found.'];
-                    } else {
-                        $commentsenabled=true;
-                        $pageinfo=$pageinfo[0];
+            sleep(1.5);
+            $received=($database->query('SELECT `comments` FROM `Questions` WHERE `p`='.$_POST['page']))->fetch_array();
+            $errormessage=null;
+            if (isset($received[0])) {
+                if (null!=json_decode($received[0], true)) {
+                    $errormessage='ERRORCOMMENTBROKEJSON';
+                    foreach (json_decode($received[0], true) as $comment) {
+                        if ($comment['submitted']==$time) {
+                            $errormessage=null;
+                            $additionalinfo.='<script type="text/javascript">document.getElementById("commentfooter'.$_POST['id'].'").insertBefore(document.createElement("p"),document.getElementById("commentfooter'.$_POST['id'].'").childNodes['.$childnodebefore.']).innerHTML="Your comment &ldquo;'.substr(verify($_POST['commenttext'], "n", 0), 0, -1).'&rdquo; has been submitted";</script>';
+                            break;//this breaks out of foreach
+                        }
                     }
                 } else {
-                    $pageinfo=['title'=>"Cannot reach server",'content'=>'The website is temporarily down but should be back online in under an hour. I apologize for the inconvenience.'];
+                    $errormessage='ERRORCHECKDATABASEJSON';
                 }
+            } else {
+                $errormessage='ERRORDATABASEMALFUNCTION';
+            }
+            if (isset($errormessage)) {
+                $pageinfo=['title'=>"Error receiving submission",'content'=>'Your submission was received, but something happened due to an error on my part.  Please report this error to me using this <a target:"_blank" href="mailto:whitenat@students.holliston.k12.ma.us?subject='.$errormessage.'&body=settedcommentsto'.urlencode(var_export(str_split(json_encode($data)), true)).'page'.urlencode(var_export($_POST['page'], true)).'">link</a> so I can work to fix this immediately.'];
             }
         }
-        $database->close();
+        foreach ($_POST as $key=>$value) {
+            $_POST[$key]=null;
+        }
+    } else {
+        $pageinfo=['title'=>"Cannot reach server",'content'=>'The website is temporarily down and the comment could not be posted. The site should be back online in under an hour. I apologize for the inconvenience.'];
+    }
+}
+if ($conn) {
+    $datafile=$database->query("SELECT `p`,`title` FROM `Questions` WHERE `p`>-1 AND `posted`>0 ORDER BY netvotes DESC, submitted DESC");
+    $navdata=array();
+    while ($data=$datafile->fetch_array()) {
+        array_push($navdata, $data);
+    };
+} else {
+    $navdata=[];
+};
+$navbarhtml='<ul><li><a href="'.$homewebsite.'/addquestion.php">Add Your Question</a></li>';
+if ($conn) {
+    for ($i=0;$i<count($navdata);$i++) {
+        $navbarhtml.='<li><a href="'.$homewebsite.'?p='.$navdata[$i]["p"].'">'.$navdata[$i]['title'].'</a></li>';
+    }
+} else {
+    $navbarhtml.="<p>Questions could not be reached</p>";
+}
+$navbarhtml.='</ul>';
+$commentsenabled=false;
+if (is_null($pageinfo)) {
+    $pageinfo=array();
+    if (is_null($_GET['p'])||$_GET['p']<0) {
+        $pageinfo=['title'=>'Page not found','content'=>'Sorry, page not found.'];
+    } else {
+        if ($conn) {
+            $datafile=$database->query("SELECT * FROM `Questions` WHERE p=".$_GET['p']." AND posted>0");
+            while ($data=$datafile->fetch_array()) {
+                array_push($pageinfo, $data);
+            };
+            if (!isset($pageinfo[0])) {
+                $pageinfo=['title'=>'Page not found','content'=>'Sorry, page not found.'];
+            } else {
+                $commentsenabled=true;
+                $pageinfo=$pageinfo[0];
+            }
+        } else {
+            $pageinfo=['title'=>"Cannot reach server",'content'=>'The website is temporarily down but should be back online in under an hour. I apologize for the inconvenience.'];
+        }
+    }
+}
+$database->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">

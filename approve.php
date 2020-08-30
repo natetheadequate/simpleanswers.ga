@@ -118,17 +118,17 @@ foreach ($comments as $pageofcomments) {
         foreach ($pageofcomments as $comment) {
             if ($comment['posted']==-1) {
                 $maxdepthlevel=strlen($comment['id']);//should only do below the length of the id of the comment cuz its parents wont be longer
-                                $depthlevel=1;//the length of id is the depth level because of the way it is.1 char is top level
-                                while ($depthlevel<$maxdepthlevel) {//so it ccan diplsay the parents too
-                                    foreach ($pageofcomments as $possibleparentcomment) {
-                                        if (strlen($possibleparentcomment['id'])==$depthlevel&&$possibleparentcomment['id']==substr($comment['id'], 0, $depthlevel)) {
-                                            echo $possibleparentcomment['content'];
-                                            echo '<br />';
-                                            break;
-                                        }
-                                    }
-                                    $depthlevel++;
-                                }
+                $depthlevel=1;//the length of id is the depth level because of the way it is.1 char is top level
+                while ($depthlevel<$maxdepthlevel) {//so it ccan diplsay the parents too
+                        foreach ($pageofcomments as $possibleparentcomment) {
+                            if (strlen($possibleparentcomment['id'])==$depthlevel&&$possibleparentcomment['id']==substr($comment['id'], 0, $depthlevel)) {
+                                echo $possibleparentcomment['content'];
+                                echo '<br />';
+                                break;
+                            }
+                        }
+                    $depthlevel++;
+                }
                 echo '<b>'.$comment['content'].'</b>';
                 echo "<input type='checkbox' checked id='".$i.'and'.$j."'/>";
                 echo '<hr />';
