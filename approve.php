@@ -2,7 +2,7 @@
 <head>
 <meta name="robots" content="noindex,nofollow">
 <script>
-function siblings(id,comments){//to hell with this just make it submit to a new php file
+function siblings(id,comments){//just make it submit to a new php file
         var siblings=0;
         for(var k=0;k<comments.length;k++){
               if(((comments[k]['id'].substring(0,comments[k]['id'].length-1))==id.substring(0,id.length-1))&&(comments[k]['id'].charAt(comments[k]['id'].length-1)!='X')){siblings++;}// comments includes all the comments verified and unverified
@@ -86,62 +86,63 @@ function getsql(contents,storyemails,storytitles,comments,p){
 <body>
 <?php
 include 'verifier.php';
-$database=new mysqli("fdb22.awardspace.net","3165326_database",".Data345","3165326_database",3306); 
+require 'DBconnector.php';
+$database=$DB;
 $datafile=$database->query("SELECT DISTINCT `title`,`content`,`submitted`,`email` FROM `Questions` WHERE `posted`=-1");//distinct cuz spam
 $contents=array();
-while($datum=$datafile->fetch_array()){
-       array_push($contents, $datum);
+while ($datum=$datafile->fetch_array()) {
+    array_push($contents, $datum);
 }
 $index=0;
-foreach($contents as $content){
-       echo "<b>".$content['title']."</b><br />".$content['content'];//will be not encoded bc displayed to screen, so cant compare screen output with database
-       echo "<input type='checkbox' checked id='".$index."'/><hr />";
-       $index++;
+foreach ($contents as $content) {
+    echo "<b>".$content['title']."</b><br />".$content['content'];//will be not encoded bc displayed to screen, so cant compare screen output with database
+    echo "<input type='checkbox' checked id='".$index."'/><hr />";
+    $index++;
 }
 echo '<br />Comments:<br /><br />';
 $datafile=$database->query("SELECT `title`,`email`,`comments` FROM `Questions` WHERE `p`>-1 ORDER BY `p` ASC");
 $storyemails=array();
 $storytitles=array();
 $comments=array();
-while($datum=$datafile->fetch_array()){
-        array_push($storyemails,$datum['email']);
-        array_push($storytitles,$datum['title']);
-        array_push($comments,json_decode($datum['comments'], true));
+while ($datum=$datafile->fetch_array()) {
+    array_push($storyemails, $datum['email']);
+    array_push($storytitles, $datum['title']);
+    array_push($comments, json_decode($datum['comments'], true));
 }
 $index=0;
 $i=0;
 $j=0;
 $notpostedsijs=array();
-foreach($comments as $pageofcomments){
-        if(isset($pageofcomments)){
-                foreach($pageofcomments as $comment){
-                       if($comment['posted']==-1){
-                                $maxdepthlevel=strlen($comment['id']);//should only do below the length of the id of the comment cuz its parents wont be longer
+foreach ($comments as $pageofcomments) {
+    if (isset($pageofcomments)) {
+        foreach ($pageofcomments as $comment) {
+            if ($comment['posted']==-1) {
+                $maxdepthlevel=strlen($comment['id']);//should only do below the length of the id of the comment cuz its parents wont be longer
                                 $depthlevel=1;//the length of id is the depth level because of the way it is.1 char is top level
-                                while($depthlevel<$maxdepthlevel){//so it ccan diplsay the parents too
-                                    foreach($pageofcomments as $possibleparentcomment){
-                                            if(strlen($possibleparentcomment['id'])==$depthlevel&&$possibleparentcomment['id']==substr($comment['id'],0,$depthlevel)){
-                                                  echo $possibleparentcomment['content'];
-                                                  echo '<br />';
-                                                  break;
-                                            }
+                                while ($depthlevel<$maxdepthlevel) {//so it ccan diplsay the parents too
+                                    foreach ($pageofcomments as $possibleparentcomment) {
+                                        if (strlen($possibleparentcomment['id'])==$depthlevel&&$possibleparentcomment['id']==substr($comment['id'], 0, $depthlevel)) {
+                                            echo $possibleparentcomment['content'];
+                                            echo '<br />';
+                                            break;
+                                        }
                                     }
                                     $depthlevel++;
                                 }
-                                echo '<b>'.$comment['content'].'</b>';
-                                echo "<input type='checkbox' checked id='".$i.'and'.$j."'/>";
-                                echo '<hr />';
-                       }
-                       $j++;
-                }
+                echo '<b>'.$comment['content'].'</b>';
+                echo "<input type='checkbox' checked id='".$i.'and'.$j."'/>";
+                echo '<hr />';
+            }
+            $j++;
         }
-        $i++;
-        $j=0;
+    }
+    $i++;
+    $j=0;
 }
 ?>
 <div id="emails"></div>
-<?php 
-echo 
+<?php
+echo
 "<script> 
 function callgetsql(){
         getsql('".json_encode($contents)."','".json_encode($storyemails)."','".json_encode($storytitles)."','".json_encode($comments)."','".((($database->query('Select p From Questions Order by p DESC'))->fetch_array())[0]+1)."');

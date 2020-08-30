@@ -5,8 +5,8 @@
     --notasidemargin:10px;
 }
 *{
-    overflow-wrap: break-word;
-    word-wrap: break-word;
+        overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 .menubutton{
     display:none;
@@ -53,7 +53,7 @@ textarea{
 /*specific*/
 body{
     background-color:black;
-    background-image:url('https://i.ibb.co/p0X1FfR/simpleanswerswallpaper.jpg');
+    /*background-image:url('https://i.ibb.co/p0X1FfR/simpleanswerswallpaper.jpg');*/
     background-attachment:fixed;
 }
 #flexgroup{
