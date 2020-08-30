@@ -1,7 +1,7 @@
 <?php
         require 'DBconnector.php';
         $database=$DB;
-        $homewebsite='http://www.simpleanswers.dx.am';
+        $homewebsite='http://www.simpleanswers.ga';
         if (is_null($verifieralreadycalled)) {
             include "verifier.php";
         }
