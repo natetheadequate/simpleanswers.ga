@@ -70,7 +70,7 @@ aside{
     left:0;
     width:30%;
     max-width:250px;
-    overflow:scroll;
+    overflow-y:auto;
     background-color:#676561;
 }
 #search *{
