@@ -1,6 +1,5 @@
 <?php
-include 'DBconnector.php';
-$database=$DB;
+include 'DBconnector.php';//imports $DB, the database object
 $homewebsite='http://www.simpleanswers.ga';
 if (is_null($verifieralreadycalled)) {
     include "verifier.php";
@@ -8,37 +7,37 @@ if (is_null($verifieralreadycalled)) {
 if (!isset($additionalinfo)) {
     $additionalinfo='';
 }
-$conn=(($database->query("SELECT * FROM `Questions`"))==false)?false:true;//if the database can be contacted, conn is true, else false
+$conn=(($DB->query("SELECT * FROM `Questions`"))==false)?false:true;//if the DB can be contacted, conn is true, else false
 if ($conn&&isset($_POST['dothissql'])) {//this is for the voting system
         $backup=fopen('backup.txt', "a");
     if (isset($_POST['page'])&&strpos($_POST['page'], 'c')===false) {
         switch ((int)$_POST['dothissql']) {
             case 0: fwrite($backup, '¦'.$_POST['page'].'u-');
-                $database->query('UPDATE `Questions` set `upvotes`=`upvotes`-1 where p='.$_POST['page']);
+                $DB->query('UPDATE `Questions` set `upvotes`=`upvotes`-1 where p='.$_POST['page']);
                 continue;
             case 1: fwrite($backup, '¦'.$_POST['page'].'d-');
-                $database->query('UPDATE `Questions` set `downvotes`=`downvotes`-1 where p='.$_POST['page']);
+                $DB->query('UPDATE `Questions` set `downvotes`=`downvotes`-1 where p='.$_POST['page']);
                 continue;
             case 2: fwrite($backup, '¦'.$_POST['page'].'d-¦'.$_POST['page'].'u+');
-                $database->query('UPDATE `Questions` set `downvotes`=`downvotes`-1,`upvotes`=`upvotes`+1 where p='.$_POST['page']);
+                $DB->query('UPDATE `Questions` set `downvotes`=`downvotes`-1,`upvotes`=`upvotes`+1 where p='.$_POST['page']);
                 continue;
             case 3: fwrite($backup, '¦'.$_POST['page'].'u+');
-                $database->query('UPDATE `Questions` set `upvotes`=`upvotes`+1 where p='.$_POST['page']);
+                $DB->query('UPDATE `Questions` set `upvotes`=`upvotes`+1 where p='.$_POST['page']);
                 continue;
             case 4: fwrite($backup, '¦'.$_POST['page'].'d+¦'.$_POST['page'].'u-');
-                $database->query('UPDATE `Questions` set `upvotes`=`upvotes`-1,`downvotes`=`downvotes`+1 where p='.$_POST['page']);
+                $DB->query('UPDATE `Questions` set `upvotes`=`upvotes`-1,`downvotes`=`downvotes`+1 where p='.$_POST['page']);
                 continue;
             case 5: fwrite($backup, '¦'.$_POST['page'].'d+');
-                $database->query('UPDATE `Questions` set `downvotes`=`downvotes`+1 where p='.$_POST['page']);
+                $DB->query('UPDATE `Questions` set `downvotes`=`downvotes`+1 where p='.$_POST['page']);
                 continue;
         }
-        $database->query('UPDATE `Questions` set netvotes=upvotes-downvotes where p='.$_POST['page']);
+        $DB->query('UPDATE `Questions` set netvotes=upvotes-downvotes where p='.$_POST['page']);
     } elseif (isset($_POST['page'])&&strpos($_POST['page'], 'c')!==false) {
         $splitted=explode('c', $_POST['page']);
         $page=$splitted[0];
         $commentid=$splitted[1];
         $change=0;
-        $comments=json_decode((($database->query('Select `comments` from Questions where p='.$page))->fetch_array())[0], true);
+        $comments=json_decode((($DB->query('Select `comments` from Questions where p='.$page))->fetch_array())[0], true);
         switch ((int)$_POST['dothissql']) {
                         case 0: $change=-1;
                                 fwrite($backup, '¦'.$_POST['page'].'u-');
@@ -65,7 +64,7 @@ if ($conn&&isset($_POST['dothissql'])) {//this is for the voting system
                 $comments[$i]['netvotes']+=$change;
             }
         }
-        $database->query('Update Questions Set comments=\''.json_encode($comments).'\' where p='.$page);
+        $DB->query('Update Questions Set comments=\''.json_encode($comments).'\' where p='.$page);
         $additionalinfo.='<script type="text/javascript">document.getElementById("commentidpasser").innerHTML="'.$commentid.'"</script>';
     }
     $additionalinfo.='<script type="text/javascript">document.getElementById("messagepassed").innerHTML="';
@@ -83,7 +82,7 @@ if ($conn&&isset($_POST['dothissql'])) {//this is for the voting system
 }
 if (isset($_POST['commenttext'])) {//this only triggers on reload following comment submission
     if ($conn) {
-        $datafile=$database->query("SELECT `comments` FROM `Questions` WHERE p=".$_POST['page']);
+        $datafile=$DB->query("SELECT `comments` FROM `Questions` WHERE p=".$_POST['page']);
         $data=$datafile->fetch_array();
         $data=json_decode($data['comments'], true);
         $giveup=false;
@@ -118,15 +117,15 @@ if (isset($_POST['commenttext'])) {//this only triggers on reload following comm
             }*/
             $backup=fopen('backup.txt', "a");
             fwrite($backup, '¦c'.$_POST['page'].'¬'.json_encode($data), 200);
-            $database->query("Update `BackupQuestions2` SET `comments`=`comments`+'".str_replace('\\/', '/', json_encode($newdata))."' WHERE `p`=".$_POST['page']);
-            $database->query("UPDATE `BackupQuestions` SET `comments`='".str_replace('\\/', '/', json_encode($data))."' WHERE `p`=".$_POST['page']);
-            $database->query("UPDATE `Questions` SET `comments`='".str_replace('\\/', '/', json_encode($data))."' WHERE `p`=".$_POST['page']);
+            $DB->query("Update `BackupQuestions2` SET `comments`=`comments`+'".str_replace('\\/', '/', json_encode($newdata))."' WHERE `p`=".$_POST['page']);
+            $DB->query("UPDATE `BackupQuestions` SET `comments`='".str_replace('\\/', '/', json_encode($data))."' WHERE `p`=".$_POST['page']);
+            $DB->query("UPDATE `Questions` SET `comments`='".str_replace('\\/', '/', json_encode($data))."' WHERE `p`=".$_POST['page']);
             $childnodebefore=2;
             if ($_POST['id']=='') {
                 $childnodebefore++;
             }
             sleep(1.5);
-            $received=($database->query('SELECT `comments` FROM `Questions` WHERE `p`='.$_POST['page']))->fetch_array();
+            $received=($DB->query('SELECT `comments` FROM `Questions` WHERE `p`='.$_POST['page']))->fetch_array();
             $errormessage=null;
             if (isset($received[0])) {
                 if (null!=json_decode($received[0], true)) {
@@ -156,7 +155,7 @@ if (isset($_POST['commenttext'])) {//this only triggers on reload following comm
     }
 }
 if ($conn) {
-    $datafile=$database->query("SELECT `p`,`title` FROM `Questions` WHERE `p`>-1 AND `posted`>0 ORDER BY netvotes DESC, submitted DESC");
+    $datafile=$DB->query("SELECT `p`,`title` FROM `Questions` WHERE `p`>-1 AND `posted`>0 ORDER BY netvotes DESC, submitted DESC");
     $navdata=array();
     while ($data=$datafile->fetch_array()) {
         array_push($navdata, $data);
@@ -180,7 +179,7 @@ if (is_null($pageinfo)) {
         $pageinfo=['title'=>'Page not found','content'=>'Sorry, page not found.'];
     } else {
         if ($conn) {
-            $datafile=$database->query("SELECT * FROM `Questions` WHERE p=".$_GET['p']." AND posted>0");
+            $datafile=$DB->query("SELECT * FROM `Questions` WHERE p=".$_GET['p']." AND posted>0");
             while ($data=$datafile->fetch_array()) {
                 array_push($pageinfo, $data);
             };
@@ -195,7 +194,7 @@ if (is_null($pageinfo)) {
         }
     }
 }
-$database->close();
+$DB->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
