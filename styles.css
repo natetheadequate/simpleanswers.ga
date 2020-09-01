@@ -71,6 +71,7 @@ aside{
     width:30%;
     max-width:250px;
     overflow-y:auto;
+    overflow-x:hidden;
     background-color:#676561;
 }
 #search *{
