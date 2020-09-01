@@ -5,7 +5,7 @@ function subsearch($column)
     global $str,$i,$output;
     require 'DBconnector.php';
     $database=$DB;
-    $datafile=($database->query('SELECT `p`,`'.$column.'` FROM Questions WHERE LOWER(`'.$column.'`) Like "%'.strtolower($str).'%" ORDER BY `netvotes` DESC'));
+    $datafile=($database->query('SELECT `p`,`'.$column.'` FROM Questions WHERE p>-1 AND LOWER(`'.$column.'`) Like "%'.strtolower($str).'%" ORDER BY `netvotes` DESC'));
     while ($i<5&&($data=$datafile->fetch_array())) {
         preg_match_all('/((?>(?:^|\s).{0,20}'.$str.').{0,20}(?:\s|$))/i', $data[$column], $matches);//'titlearray', more like $column.'array
         foreach ($matches[0] as $match) {
