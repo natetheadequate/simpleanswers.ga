@@ -1,6 +1,5 @@
 <?php
 include 'DBconnector.php';//imports $DB, the database object
-$homewebsite='http://www.simpleanswers.ga';
 if (is_null($verifieralreadycalled)) {
     include "verifier.php";
 }
@@ -163,10 +162,10 @@ if ($conn) {
 } else {
     $navdata=[];
 };
-$navbarhtml='<ul><li><a href="'.$homewebsite.'/addquestion.php">Add Your Question</a></li>';
+$navbarhtml='<ul><li><a href="/addquestion.php">Add Your Question</a></li>';
 if ($conn) {
     for ($i=0;$i<count($navdata);$i++) {
-        $navbarhtml.='<li><a href="'.$homewebsite.'?p='.$navdata[$i]["p"].'">'.$navdata[$i]['title'].'</a></li>';
+        $navbarhtml.='<li><a href="?p='.$navdata[$i]["p"].'">'.$navdata[$i]['title'].'</a></li>';
     }
 } else {
     $navbarhtml.="<p>Questions could not be reached</p>";
@@ -206,8 +205,8 @@ $DB->close();
     <link async href="https://fonts.googleapis.com/css?family=Inter|Spartan|Lato|Karla|Patrick+Hand&display=swap" rel="stylesheet"/>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script defer id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <link defer rel="shortcut icon" href="http://simpleanswers.dx.am/favicon.ico" type="image/x-icon" />
-    <link defer rel="icon" href="http://simpleanswers.dx.am/favicon.ico" type="image/x-icon" />
+    <link defer rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link defer rel="icon" href="favicon.ico" type="image/x-icon" />
     <title><?php echo $pageinfo['title']?></title>
     <?php
     echo "<script type='text/javascript'>
@@ -463,7 +462,7 @@ innerhtml+='<div class="votesdiv"><span style="cursor:pointer" id="upvote'+page+
             </aside>
             <div id="notaside">
                     <header>
-                         <h1><?php echo '<a href="'.$homewebsite.'">Simple Answers</a>';?></h1>
+                         <h1><?php echo '<a href="/">Simple Answers</a>';?></h1>
                     </header>
                     <main>
                         <div id="titleandvotesdiv">
