@@ -58,7 +58,7 @@ textarea {
     color: black;
     background-image: linear-gradient(to bottom right, lightgray, white);
     border-width: 0px;
-    padding:5px;
+    padding: 5px;
     font-family: "Patrick Hand", handwriting, cursive;
 }
 
@@ -124,12 +124,12 @@ aside {
 }
 
 #searchicon.searchable {
-    display:none;
+    display: none;
 }
 
 #closeicon {
     color: transparent;
-    display:hidden;
+    display: none;
 }
 
 #closeicon.searchable {
@@ -414,8 +414,8 @@ footer#contact a:hover {
         border-radius: 0;
         padding-left: 3px;
     }
-    #
-    #hidesearchbutton {
+
+    # #hidesearchbutton {
         max-width: 50px;
     }
 
@@ -423,9 +423,11 @@ footer#contact a:hover {
         display: inline;
         max-width: 50px;
     }
-    #aside button{
-        height:50px;
+
+    #aside button {
+        height: 50px;
     }
+
     #showsearchbutton {
         display: none;
     }
@@ -437,23 +439,28 @@ footer#contact a:hover {
     nav {
         display: none;
     }
-    .menubutton{
-        width:100%;
+
+    .menubutton {
+        width: 100%;
     }
+
     .menubutton:hover {
         cursor: pointer;
         background-color: blanchedalmond;
     }
-    #aside{
+
+    #aside {
         max-width: unset;
         position: unset;
-        min-width:100%;
+        min-width: 100%;
     }
-    #notaside{
-        margin-left:5px;
+
+    #notaside {
+        margin-left: 5px;
     }
-    header>h1>a{
-        background-color:unset;
+
+    header>h1>a {
+        background-color: unset;
         box-shadow: unset;
     }
 }
