@@ -58,6 +58,7 @@ textarea {
     color: black;
     background-image: linear-gradient(to bottom right, lightgray, white);
     border-width: 0px;
+    padding:5px;
     font-family: "Patrick Hand", handwriting, cursive;
 }
 
