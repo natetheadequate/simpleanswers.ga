@@ -1,372 +1,458 @@
 /*General rules*/
-:root{
-    --asidemaxwidth:250px;
-    --asidepercentwidth:30%;
-    --notasidemargin:10px;
+:root {
+    --asidemaxwidth: 250px;
+    --asidepercentwidth: 30%;
+    --notasidemargin: 10px;
 }
-*{
-        overflow-wrap: break-word;
-  word-wrap: break-word;
+
+* {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
-.menubutton{
+
+.menubutton {
+    display: none;
+}
+
+mark {
+    background-color: #002bff77;
+}
+
+#fakeshowsearchbutton {
+    display: none;
+}
+
+* {
+    font-family: "sans serif";
+    box-sizing: border-box;
+    max-width: 100%;
+    /* just added*/
+}
+
+*:not(a) {
+    margin: 0;
+    padding: 0;
+    color: white;
+}
+
+a:visited:not(#nav *) {
+    color: violet;
+}
+
+button {
+    border: 2px solid white;
+    border-radius: 5px;
+    background-color: black;
+    padding: 6px;
+}
+
+a:hover,
+button:hover:not(.menubutton) {
+    background-color: #f9f99633;
+    color: #bfceff;
+    cursor: pointer;
+}
+
+input,
+textarea {
+    color: black;
+    background-image: linear-gradient(to bottom right, lightgray, white);
+    border-width: 0px;
+    font-family: "Patrick Hand", handwriting, cursive;
+}
+
+textarea {
+    width: 100%;
+}
+
+/*specific*/
+body {
+    background-color: black;
+    background-image: url('https://i.ibb.co/p0X1FfR/simpleanswerswallpaper.jpg');
+    background-attachment: fixed;
+}
+
+#flexgroup {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+aside {
+    float: left;
+    position: fixed;
+    box-shadow: 0px 0px 50px 1px #FFCDD2;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    width: 30%;
+    max-width: 250px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: #676561;
+}
+
+#search * {
+    transition: all .2s cubic-bezier(0.16, 0.21, 0.58, 1);
+}
+
+#search {
+    display: flex;
+}
+
+#search button {
+    width: 100%;
+    background-color: #50de22;
+    border-radius: 0;
+    border: 0 solid white;
+    font-size: 200%;
+    line-height: 110%;
+    padding: 0 8px;
+    margin: 0;
+}
+
+#search button>p {
+    width: 100%;
+    padding: 3px;
+    text-align: center;
+}
+
+#search button>p.searchable,
+#search button.searchable {
+    width: 40px;
+}
+
+#searchicon.searchable {
     display:none;
 }
-mark{
-background-color:#002bff77;
-}
-#fakeshowsearchbutton{
-display:none;}
-*{
-    font-family:"sans serif";
-    box-sizing:border-box;
-    max-width:100%;/* just added*/
-}
-*:not(a){
-    margin:0;
-    padding:0;
-    color:white;
-}
-a:visited:not(#nav *){
-    color:violet;
-}
-button{
-    border:2px solid white;
-    border-radius:5px;
-    background-color:black;
-    padding:6px;
-}
-a:hover,button:hover:not(.menubutton){
-    background-color:#f9f99633;
-    color:#bfceff;
-    cursor:pointer;
+
+#closeicon {
+    color: transparent;
+    display:hidden;
 }
 
-input,textarea{
-    color:black;
-    background-image:linear-gradient(to bottom right, lightgray, white);
-    border-width:0px;
-    font-family:"Patrick Hand",handwriting,cursive;
-}
-textarea{
-    width:100%;
-}
-/*specific*/
-body{
-    background-color:black;
-    background-image:url('https://i.ibb.co/p0X1FfR/simpleanswerswallpaper.jpg');
-    background-attachment:fixed;
-}
-#flexgroup{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:space-around;
-}
-aside{
-    float:left;
-    position:fixed;
-    box-shadow:0px 0px 50px 1px #FFCDD2 ;
-    bottom:0;
-    top:0;
-    left:0;
-    width:30%;
-    max-width:250px;
-    overflow-y:auto;
-    overflow-x:hidden;
-    background-color:#676561;
-}
-#search *{
-    transition:all .2s cubic-bezier(0.16, 0.21, 0.58, 1);
-}
-#search{
-    display:flex;
-}
-#search button{
-    width:100%;
-    background-color:#50de22;
-    border-radius:0;
-    border:0 solid white;
-    font-size:200%;
-    line-height:110%;
-    padding:0 8px;
-    margin:0;
-}
-#search button>p{
-    width:100%;
-    padding:3px;
-    text-align:center;
-}
-#search button>p.searchable,#search button.searchable{
-        width:40px;
-}
-#searchicon.searchable{
-    color:transparent;
-}
-#closeicon{
-    color:transparent;
-}
-#closeicon.searchable{
-    color:white;
-}
-#search button>p:first-child{
-    position:absolute;
-}
-#searchinput{
-        font-size:large;
-        padding-left:10px;
-        width:100%;
-        display:none;
-}
-#searchinput.searchable{
-    display:inline;
-}
-#searchnav{
-    background-image:linear-gradient(black,#4c4c4c);
-    box-shadow:0px 0px 100px 0px #909090;
-    border-bottom:3px double white;
+#closeicon.searchable {
+    color: white;
+    display: block;
 }
 
-nav *{
-    margin-left:auto;
-    margin-right:auto;
-    text-align:center;
+#searchinput {
+    font-size: large;
+    padding-left: 10px;
+    width: 100%;
+    display: none;
 }
-nav li{
-    margin:auto;
-    display:flex;
+
+#searchinput.searchable {
+    display: inline;
 }
-nav a{
-    border-bottom:2px solid blue;
-    width:100%;
+
+#searchnav {
+    background-image: linear-gradient(black, #4c4c4c);
+    box-shadow: 0px 0px 100px 0px #909090;
+    border-bottom: 3px double white;
 }
-nav a:hover{
-    background-color:#e41a1a4f;
+
+nav * {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
-nav li:has(>a[href="/addquestion.php"]){
-    
-    border:1px solid green;
+
+nav li {
+    margin: auto;
+    display: flex;
 }
-nav li:last-of-type>a{
-    border:none;
+
+nav a {
+    border-bottom: 2px solid blue;
+    width: 100%;
 }
-nav a,.menubutton{
-    color:#5daae0;
-    font-size:150%;
-    font-family:"Inter";
-    font-weight:bold;
-    text-decoration:none;
+
+nav a:hover {
+    background-color: #e41a1a4f;
 }
-nav li a{
-    display:block;
-    padding:8px;
+
+nav li:has(>a[href="/addquestion.php"]) {
+
+    border: 1px solid green;
 }
-nav a[href="/addquestion.php"]{
-    color:#00e095;
-    font-style:oblique;
-    font-decoration:none;
-    border-bottom-color:chartreuse;
-    border-bottom:3px double;
+
+nav li:last-of-type>a {
+    border: none;
+}
+
+nav a,
+.menubutton {
+    color: #5daae0;
+    font-size: 150%;
+    font-family: "Inter";
+    font-weight: bold;
+    text-decoration: none;
+}
+
+nav li a {
+    display: block;
+    padding: 8px;
+}
+
+nav a[href="/addquestion.php"] {
+    color: #00e095;
+    font-style: oblique;
+    font-decoration: none;
+    border-bottom-color: chartreuse;
+    border-bottom: 3px double;
 }
 
 /*************************************/
 
-#notaside{
-    float:right;
-    flex:1 1 60%;
+#notaside {
+    float: right;
+    flex: 1 1 60%;
 
-    margin:0 var(--notasidemargin);
-    width:max(calc(100% - var(--asidepercentwidth) - var(--notasidemargin)),calc(100% - var(--asidemaxwidth) - var(--notasidemargin)));
-    margin-left:min(calc(var(--asidepercentwidth) + var(--notasidemargin)),var(--asidemaxwidth) + var(--notasidemargin));
-}
-header{
-    margin:0;
-    overflow:hidden;
-}
-header>h1{
-    text-align:center;
-    padding:20px;
-    min-width:100%;
-    margin:0;
-    float:right;
-    background:radial-gradient(#FFFFFF44,#FFFFFF00);
-}
-header>h1>a{
-    text-decoration:none;
-    color:#406ae0F;
-    font-family:"Spartan",sans-serif;
-    border-radius:5px;
-    color:#FFFFFFFF;
-    background-color:#FFFFFF44;
-    box-shadow:0px 0px 50px 50px #FFFFFF44;
-}
-header>h1>a:visited{
-    color:unset;
-}
-header>h1>a:hover{
-    background-color:#faebd74d;
-    text-decoration:#ff000043 underline dotted;
-}
-main{
-    border:3px groove silver;
-    padding:20px;
-    backdrop-filter:blur(3px);
-}
-main h2{
-    color:#47a8ad;
-    text-shadow:10px 10px 10px #f1e6665c;
-    font-size:xx-large;
-    text-align:center;
-    font-family:Karla;
-}
-div#titleandvotesdiv{
-    display:flex;
-    margin-bottom:10px;
-    justify-content:center;
-}
-main h3{
-    color:chartreuse;
-    font-weight:lighter;
-    font-size:smaller;
-    text-align:center;
-    margin-bottom:30px;
-    border:1px dotted;
-    border-radius:15px;
-    padding:5px;
-}
-div#votesdiv{
-    float:left;
-    display:block;
-    max-height:min-content;
-    clear:right;
-}
-div#votesdiv>span{
-    font-weight:bolder;
-    font-size:x-large;
-}
-div.votesdiv>span:first-of-type{/*class includes comments votes*/
-    color:chartreuse;
-}
-div.votesdiv>span:last-of-type{
-    color:red;
-}
-main p{
-    font-size:110%;
+    margin: 0 var(--notasidemargin);
+    width: max(calc(100% - var(--asidepercentwidth) - var(--notasidemargin)), calc(100% - var(--asidemaxwidth) - var(--notasidemargin)));
+    margin-left: min(calc(var(--asidepercentwidth) + var(--notasidemargin)), var(--asidemaxwidth) + var(--notasidemargin));
 }
 
-div#commentfooter>p:first-child{
-    color:tan;
-    border:4px dotted;
-    border-color:coral;
-    border-radius:20px;
-    padding:2%;
-    margin:2% auto;
-    text-align:center;
-    display:none;
+header {
+    margin: 0;
+    overflow: hidden;
 }
-footer#commentfooter{
-    margin-top:15px;
+
+header>h1 {
+    text-align: center;
+    padding: 20px;
+    min-width: 100%;
+    margin: 0;
+    float: right;
+    background: radial-gradient(#FFFFFF44, #FFFFFF00);
 }
-footer#commentfooter>* div:not(.commentform){
-    border-left:1px dotted white;
-    margin-left:10px;
+
+header>h1>a {
+    text-decoration: none;
+    color: #406ae0F;
+    font-family: "Spartan", sans-serif;
+    border-radius: 5px;
+    color: #FFFFFFFF;
+    background-color: #FFFFFF44;
+    box-shadow: 0px 0px 50px 50px #FFFFFF44;
 }
-footer#commentfooter div:not(.commentform):not(#commentfooter):not(.votesdiv){
-    margin-top:20px;
-    backdrop-filter:blur(3px);
+
+header>h1>a:visited {
+    color: unset;
 }
-footer#commentfooter div>p>i:first-child{
-    color:#7072a2;
+
+header>h1>a:hover {
+    background-color: #faebd74d;
+    text-decoration: #ff000043 underline dotted;
 }
-footer#commentfooter div>p{
-    padding:5px 3px;
+
+main {
+    border: 3px groove silver;
+    padding: 20px;
+    backdrop-filter: blur(3px);
 }
-footer#commentfooter button{
-    color:#03A9F4;
-    border-color:#bfae3d;
-    padding:5px;
-    margin-top:5px;
-    margin-left:10px;
-    font-family:Lato;
+
+main h2 {
+    color: #47a8ad;
+    text-shadow: 10px 10px 10px #f1e6665c;
+    font-size: xx-large;
+    text-align: center;
+    font-family: Karla;
 }
-div.imperial{
-        font-weight:bold;
-        border-left:5px groove #4bd64b;
+
+div#titleandvotesdiv {
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: center;
 }
-footer#commentfooter>div.imperial:before{
-    content:"Answer";
-    color:limegreen;
+
+main h3 {
+    color: chartreuse;
+    font-weight: lighter;
+    font-size: smaller;
+    text-align: center;
+    margin-bottom: 30px;
+    border: 1px dotted;
+    border-radius: 15px;
+    padding: 5px;
+}
+
+div#votesdiv {
+    float: left;
+    display: block;
+    max-height: min-content;
+    clear: right;
+}
+
+div#votesdiv>span {
+    font-weight: bolder;
+    font-size: x-large;
+}
+
+div.votesdiv>span:first-of-type {
+    /*class includes comments votes*/
+    color: chartreuse;
+}
+
+div.votesdiv>span:last-of-type {
+    color: red;
+}
+
+main p {
+    font-size: 110%;
+}
+
+div#commentfooter>p:first-child {
+    color: tan;
+    border: 4px dotted;
+    border-color: coral;
+    border-radius: 20px;
+    padding: 2%;
+    margin: 2% auto;
+    text-align: center;
+    display: none;
+}
+
+footer#commentfooter {
+    margin-top: 15px;
+}
+
+footer#commentfooter>* div:not(.commentform) {
+    border-left: 1px dotted white;
+    margin-left: 10px;
+}
+
+footer#commentfooter div:not(.commentform):not(#commentfooter):not(.votesdiv) {
+    margin-top: 20px;
+    backdrop-filter: blur(3px);
+}
+
+footer#commentfooter div>p>i:first-child {
+    color: #7072a2;
+}
+
+footer#commentfooter div>p {
+    padding: 5px 3px;
+}
+
+footer#commentfooter button {
+    color: #03A9F4;
+    border-color: #bfae3d;
+    padding: 5px;
+    margin-top: 5px;
+    margin-left: 10px;
+    font-family: Lato;
+}
+
+div.imperial {
+    font-weight: bold;
+    border-left: 5px groove #4bd64b;
+}
+
+footer#commentfooter>div.imperial:before {
+    content: "Answer";
+    color: limegreen;
     margin: 0px 0px 7px 0px;
     width: calc(100% - 6px);
-    text-align:center;
-    border-bottom:3px double limegreen;
-    border-top:3px double limegreen;
-    padding:3px;
-    clear:both;
-    float:right;
-    background-image:radial-gradient(circle,#ffffff00,limegreen);
+    text-align: center;
+    border-bottom: 3px double limegreen;
+    border-top: 3px double limegreen;
+    padding: 3px;
+    clear: both;
+    float: right;
+    background-image: radial-gradient(circle, #ffffff00, limegreen);
 }
-div.imperial>p{
-    background-color:#90ee9040;
+
+div.imperial>p {
+    background-color: #90ee9040;
 }
-div.votesdiv:not(#votesdiv){
-        margin:0 2px;
-        padding:0 0;
-        display:inline-block;
+
+div.votesdiv:not(#votesdiv) {
+    margin: 0 2px;
+    padding: 0 0;
+    display: inline-block;
 }
-div#commentfooter>div.commentform>div.votesdiv{
-        display:none;
+
+div#commentfooter>div.commentform>div.votesdiv {
+    display: none;
 }
 
 
-footer#contact div{
-    width:100%;
-    bottom:0;
-    padding:50px;
-    margin:20px auto;
-    clear:both;
-    text-align:center;
-        background-image:radial-gradient(#ff0000,#FFFFFF00,#FFFFFF00);
+footer#contact div {
+    width: 100%;
+    bottom: 0;
+    padding: 50px;
+    margin: 20px auto;
+    clear: both;
+    text-align: center;
+    background-image: radial-gradient(#ff0000, #FFFFFF00, #FFFFFF00);
 
 }
-footer#contact a{
-    width:100%;
-    padding:3%;
-    color:#bae9ea;
-    border-radius:100%;
+
+footer#contact a {
+    width: 100%;
+    padding: 3%;
+    color: #bae9ea;
+    border-radius: 100%;
 }
-footer#contact a:hover{
-    background-color:unset;
-    background-image:radial-gradient(#FF006665,#00000000);
-    color:#FFFFFF;
+
+footer#contact a:hover {
+    background-color: unset;
+    background-image: radial-gradient(#FF006665, #00000000);
+    color: #FFFFFF;
 }
 
 
-@media only screen and (max-width:550px){
+@media only screen and (max-width:550px) {
+    .menubutton {
+        text-align: center;
+        background-color: #291c8899;
+        border: none;
+        border-radius: 0;
+        padding-left: 3px;
+    }
+    #
+    #hidesearchbutton {
+        max-width: 50px;
+    }
+
+    #fakeshowsearchbutton {
+        display: inline;
+        max-width: 50px;
+    }
+    #aside button{
+        height:50px;
+    }
+    #showsearchbutton {
+        display: none;
+    }
+
+    #showmenubutton {
+        display: inline;
+    }
+
+    nav {
+        display: none;
+    }
     .menubutton{
-       font-size:250%;;
-       text-align:center;
-       background-color:#291c8899; 
-       border:none;
-       border-radius:0;
-       padding-left:3px;
+        width:100%;
     }
-    #hidesearchbutton{
-        max-width:50px;
-    }  
-    #fakeshowsearchbutton{
-    display:inline;
-        max-width:50px;
+    .menubutton:hover {
+        cursor: pointer;
+        background-color: blanchedalmond;
     }
-    #showsearchbutton{
-            display:none;
-    }
-    #showmenubutton{
-    display:inline;}
-    nav{display:none;}
-    .menubutton:hover{
-        cursor:pointer;
-        background-color:blanchedalmond;
+    #aside{
+        max-width: unset;
+        position: unset;
+        min-width:100%;
     }
     #notaside{
         margin-left:5px;
+    }
+    header>h1>a{
+        background-color:unset;
+        box-shadow: unset;
     }
 }

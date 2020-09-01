@@ -416,21 +416,17 @@ innerhtml+='<div class="votesdiv"><span style="cursor:pointer" id="upvote'+page+
         document.getElementById('hidesearchbutton').style.display="contents";
         document.getElementById('hidesearchbutton').onclick="hidemenu();";
         document.getElementById('showsearchbutton').style.display="none";
-    }
+    }*/
     function showmenu(){
         document.getElementById('nav').style.display='block';
-        document.getElementById('searchinput').style.display="inline";
-        document.getElementById('aside').style.minWidth='100%';
-        document.getElementById('hidemenubutton').style.display='contents';
+        document.getElementById('hidemenubutton').style.display='block';
         document.getElementById('showmenubutton').style.display="none";
     }
     function hidemenu(){
         document.getElementById('nav').style.display='none';
         document.getElementById('showmenubutton').style.display="block";
         document.getElementById('hidemenubutton').style.display='none';
-        document.getElementById('searchinput').style.display="none";
-        document.getElementById('aside').style.minWidth='0%';
-        }*/
+        }
     </script>
 </head>
 <body>
@@ -440,7 +436,7 @@ innerhtml+='<div class="votesdiv"><span style="cursor:pointer" id="upvote'+page+
     <div id="flexgroup">
             <aside id="aside">
                 <div id="search">
-                        <button onclick="changesearchstate();" class='searchbutton' id='desktopsearchbutton'><p id="searchicon">&#x2315;</p><p id="closeicon">×</p><p id="screenp"> </p></button> 
+                        <button onclick="changesearchstate();" class='searchbutton' id='desktopsearchbutton'><p id="searchicon">&#x2315;</p><p id="closeicon" >×</p><p id="screenp"> </p></button> 
                         <!--<button class='searchbutton' id='fakeshowsearchbutton' onclick="showmenu()"><p id="searchicon">&#x2315;</p></button>
                         <button class='searchbutton' id='showsearchbutton' onclick="
                         document.getElementById('search').style.minWidth='100%';
