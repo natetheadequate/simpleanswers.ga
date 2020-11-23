@@ -25,7 +25,7 @@
                 $received=$database->query('SELECT * FROM `Questions` WHERE `submitted`='.$time/*.' AND `content`='.verify($_POST['content']).' AND `posted`=-1 AND `title`='. verify($_POST['title'])*/);
                 $received=$received->fetch_array();
                 if (isset($received[0])) {
-                    $pageinfo=['title'=>"Thank you for your submission",'content'=>"Thank you for your submission. The story will be posted pending review."];
+                    $pageinfo=['title'=>"Thank you for your submission",'content'=>"Thank you for your submission. It will be posted pending review."];
                 } else {
                     $pageinfo=['title'=>"Error receiving submission",'content'=>'Your submission was not received due to an error on my part.  Please report this error to me using this <a href="mailto:whitenat@students.holliston.k12.ma.us?subject=ERRORCONTENTNOTRECEIVED&body='];
                     if (null!=verify($_POST['title'], 'n')) {
