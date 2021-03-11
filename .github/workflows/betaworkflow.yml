@@ -3,7 +3,7 @@ on:
   push:
     branches: 
       - beta
-name: Publish Website
+name: Publish Test Website
 jobs:
   FTP-Deploy-Action:
     name: FTP-Deploy-Action
