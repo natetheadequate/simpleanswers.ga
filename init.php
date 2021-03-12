@@ -165,7 +165,7 @@ if ($conn) {
 $navbarhtml='<ul><li><a href="/addquestion.php">Add Your Question</a></li>';
 if ($conn) {
     for ($i=0;$i<count($navdata);$i++) {
-        $navbarhtml.='<li><a href="?p='.$navdata[$i]["p"].'">'.$navdata[$i]['title'].'</a></li>';
+        $navbarhtml.='<li><a href="/?p='.$navdata[$i]["p"].'">'.$navdata[$i]['title'].'</a></li>';
     }
 } else {
     $navbarhtml.="<p>Questions could not be reached</p>";
